@@ -4,8 +4,8 @@
 #include "rscode.h"
 
 
-static unsigned int frequencies[32];
-static double theta = 0;
+/*static */unsigned int frequencies[32];
+/*static */double theta = 0;
 
 struct _bb_item_group {
 	
