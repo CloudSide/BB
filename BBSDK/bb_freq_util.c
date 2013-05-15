@@ -75,6 +75,9 @@ void freq_init() {
 
 int freq_to_num(unsigned int f, int *n) {
 	
+    frequencies[0] = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, 0));
+    frequencies[31] = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, 31));
+    
     if (n != NULL &&
         f >= frequencies[0]-BB_THRESHOLD*pow(BB_SEMITONE, 0) &&
         f <= frequencies[31]+BB_THRESHOLD*pow(BB_SEMITONE, 31)) {
@@ -82,6 +85,9 @@ int freq_to_num(unsigned int f, int *n) {
         unsigned int i;
 
         for (i=0; i<32; i++) {
+            
+            unsigned int freq = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, i));
+            frequencies[i] = freq;
             
             if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(BB_SEMITONE, i)) {
                 
@@ -633,7 +639,7 @@ int decode_sound(void *src, int fft_number)
     }
      */
     
-    freq_init();
+    //freq_init();
     int num[1] = {-1};
     freq_to_num(sound_freq, num);
     

@@ -36,7 +36,7 @@
 
 typedef struct _bb_item_group bb_item_group;
 
-void freq_init();
+//void freq_init();
 
 int freq_to_num(unsigned int f, int *n);
 

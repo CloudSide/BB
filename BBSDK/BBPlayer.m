@@ -151,7 +151,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
         char charToSend = _messageToSend[_charIndex];
         _charIndex++;
         
-        freq_init();
+        //freq_init();
         num_to_freq((int)charToSend, &_frequency);
         
         if (_once) {
