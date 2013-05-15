@@ -558,8 +558,9 @@ int encode_sound(unsigned int freq, float buffer[], size_t buffer_length)
 {
     const double amplitude = 0.25;
 	double theta_increment = 2.0 * PI * freq / SAMPLE_RATE;
-	
-	for (int frame = 0; frame < buffer_length; frame++)
+	int frame;
+    
+	for (frame = 0; frame < buffer_length; frame++)
 	{
 		buffer[frame] = sin(theta) * amplitude;
 		
@@ -605,7 +606,7 @@ int create_sending_code(unsigned char *src, unsigned char *result, int res_len) 
     }
     
     printf("code sending :  ");
-    for (int i=0; i<res_len; i++) {
+    for (i=0; i<res_len; i++) {
         printf("%u-", result[i]);
     }
     printf("\n");
