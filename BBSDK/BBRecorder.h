@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-#define kNumberRecordBuffers    3
+#define kNumberRecordBuffers    5
 
 #define test 3
 
@@ -27,7 +27,7 @@
 
 #elif(test==3)
 
-#define kBufferDurationSeconds  0.02906//0.01245//0.01744//0.0872//0.02906
+#define kBufferDurationSeconds  0.029066 //0.029066667//0.01245//0.01744//0.0872//0.02906
 #define nNumberOfCodeRecorded  54//162//126
 #define nNumberOfWatchDog      6//18//14
 

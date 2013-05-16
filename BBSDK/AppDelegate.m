@@ -11,6 +11,7 @@
 #import "BBPlayer.h"
 
 #import "BBRecorder.h"
+#import "bb_freq_util.h"
 
 @interface AppDelegate () {
     
@@ -39,9 +40,27 @@
 //    [player initBBPlayerWithSampleRate:44100];
 //    [player play:@"1234567890"];
 
+    
+    /*
+    int data[nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18] = {17, -1, -1, -1, -1, 19, 19, 26, 26, 26, 23, -1, -1, 26, 26, 26, 25, 25, -1, -1, -1, -1, 4, 4, -1, 8, -1, 8, -1, -1, 16, -1, -1, -1, 17, -1, -1, 2, 2, 2, -1, -1, 3, 3, -1, 14, -1, -1, -1, 29, -1, 15, 15, -1, 3, 3, 21, -1, 21, 3, 3, 3, 3};
+    int resultCode[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    
+    statistics(data, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
+    
+    printf("\n");
+    
+    printf("(%d-%d-)", resultCode[0], resultCode[1]);
+    
+    for (int i=2; i<20; i++) {
+        
+        printf("%d-", resultCode[i]);
+    }
+     */
+    
+    
     _recorder = [[BBRecorder alloc] initWithSampleRate:44100]; //758775
     [_recorder start];
-    
+         
     return YES;
 }
 

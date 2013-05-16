@@ -289,62 +289,87 @@ int multi_vote_accurate(int *src, int src_len, int *result, int res_len, int vot
 int statistics(int *src, int src_len, int *result, int res_len) {
     
     if (src==NULL || result==NULL || src_len==0 || res_len==0) {
+        
         return -1;
     }
+    
     // Littlebox-XXOO
-    printf("111111111111111111\n");
     
-    bb_item_group a[32]; // include -1
-	set_group(src, src_len, a, 32);
-	
-    printf("2222222222222222222\n");
-    
-	process_group(a,32);
-    
-    printf("33333333333333333333\n");
-    
-	get_group_data(a, 32, src, src_len);
-	
-    
-    printf("4444444444444444444\n");
-    
-	bb_item_group b[32]; // without -1
-	set_group(src, src_len, b, 32);
-    
-    printf("55555555555555555555\n");
-    
-    bb_item_group c[32];
-    post_process(b, 32, c, 32);
-    
-    printf("66666666666666666666\n");
-	
-	int i;
-    
-    result[0] = c[0].item;
-    result[1] = c[1].item;
-    
-    if (c[res_len].item != -2) {
+    bb_item_group a[32*3]; // include -1
+    bb_item_group b[32*3]; // without -1
+    bb_item_group c[32*3];
         
-        for (i=2; i<res_len; i++) {
-            
-            result[i] = c[i+1].item;
-        }
-    } else {
+    int i;
+    int step = 0;
+    
+	int stat = set_group(src, src_len, a, 32) == 0 &&
+               ++step &&
+               process_group(a, 32) == 0 &&
+               ++step &&
+               get_group_data(a, 32, src, src_len) == 0 &&
+               ++step &&
+               set_group(src, src_len, b, 32) == 0 &&
+               ++step &&
+               post_process(b, 32, c, 32) == 0 &&
+               ++step;
+    
+    /*
+    printf("a:\n");
+    
+    for (i=0; i<32; i++) {
         
-        for (i=2; i<res_len; i++) {
-            
-            if (c[i].item == -2) {
-                result[i] = 0;
-            }else {
-                result[i] = c[i].item;
-            }
-        }
+        printf("%d->%d\n", a[i].item, a[i].count);
     }
     
+    printf("b:\n");
     
-    printf("77777777777777777777777\n");
+    for (i=0; i<32; i++) {
+        
+        printf("%d->%d\n", b[i].item, b[i].count);
+    }
     
-    return 0;
+    printf("c:\n");
+    
+    for (i=0; i<32; i++) {
+        
+        printf("%d->%d\n", b[i].item, b[i].count);
+    }
+    */
+	
+    if (stat) {
+        
+        result[0] = c[0].item;
+        result[1] = c[1].item;
+        
+        if (c[res_len].item != -2) {
+            
+            for (i=2; i<res_len; i++) {
+                
+                result[i] = c[i+1].item;
+            }
+            
+        } else {
+            
+            for (i=2; i<res_len; i++) {
+                
+                if (c[i].item == -2) {
+                    
+                    result[i] = 0;
+                    
+                } else {
+                    
+                    result[i] = c[i].item;
+                }
+            }
+        }
+        
+        printf("77777777777777777777777\n");
+    }
+    
+    printf("step: %d\n", step);
+    printf("888888888888888888888888\n");
+    
+    return stat ? -1 : 0;
 }
 
 int compose_statistics(int *src_vote, int *src_statics, int src_len, int *result, int res_len) {
@@ -394,7 +419,8 @@ int compose_statistics(int *src_vote, int *src_statics, int src_len, int *result
 
 int set_group(int *src, int src_len, bb_item_group *result, int res_len) {
 	
-	if (src==NULL || result==NULL || src_len < res_len) {
+	if (src==NULL || result==NULL || src_len <= 0 || res_len <= 0) {
+        
 		return -1;
 	}
 	
@@ -402,6 +428,7 @@ int set_group(int *src, int src_len, bb_item_group *result, int res_len) {
 	int i;
 	
 	for (i=0; i<res_len; i++) {
+        
 		result[i].item = -2;
 		result[i].count = 0;
 	}
@@ -428,7 +455,7 @@ int set_group(int *src, int src_len, bb_item_group *result, int res_len) {
 
 int process_group(bb_item_group *src, int src_len) {
 	
-	if (src==NULL || src_len == 0) {
+	if (src==NULL || src_len <= 0) {
 		return -1;
 	}
 	
@@ -483,17 +510,23 @@ int process_group(bb_item_group *src, int src_len) {
 }
 
 int get_group_data(bb_item_group *src, int src_len, int *result, int res_len) {
-	
-	if (src==NULL || result==NULL || res_len < src_len) {
+	   
+	if (src==NULL || result==NULL || res_len <= 0 || src_len <= 0) {
+        
 		return -1;
 	}
 	
 	int i, j;
 	int index = 0;
 	
-	for (i=0; i<32; i++) {
+	for (i=0; i<src_len; i++) {
 		
 		for (j=0; j<src[i].count; j++) {
+            
+            if (index > res_len) {
+                
+                break;
+            }
             
 			result[index] = src[i].item;
 			index++;
@@ -505,7 +538,7 @@ int get_group_data(bb_item_group *src, int src_len, int *result, int res_len) {
 
 int post_process(bb_item_group *src, int src_len, bb_item_group *result, int res_len) {
 	
-	if (src==NULL || result==NULL || src_len < res_len) {
+	if (src==NULL || result==NULL || src_len <= 0 || res_len <= 0) {
 		return -1;
 	}
 	
@@ -676,7 +709,7 @@ int fft(void *src_data, int num)
     int maxIndx = 0;
     int maxEqual = 0;
     
-    for (i=1; i<size; i++)
+    for (i=1; i<size*4/5; i++)
     {
         
         double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));

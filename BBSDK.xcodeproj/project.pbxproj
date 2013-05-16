@@ -136,12 +136,12 @@
 			children = (
 				5093A72C174345D000D5040F /* bb_header.h */,
 				5093A73017437D7B00D5040F /* _kiss_fft_guts.h */,
-				5093A73117437D7B00D5040F /* kiss_fft.c */,
 				5093A73217437D7B00D5040F /* kiss_fft.h */,
-				5029493817408F510097ABBE /* rscode.c */,
+				5093A73117437D7B00D5040F /* kiss_fft.c */,
 				5029493917408F510097ABBE /* rscode.h */,
-				5059DDA817376BAF002581C0 /* bb_freq_util.c */,
+				5029493817408F510097ABBE /* rscode.c */,
 				5059DDAA17376BE1002581C0 /* bb_freq_util.h */,
+				5059DDA817376BAF002581C0 /* bb_freq_util.c */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -292,11 +292,13 @@
 		505B9844171E8E22001B46F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bruce Chen (KKYLDFR684)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BBSDK/BBSDK-Prefix.pch";
 				INFOPLIST_FILE = "BBSDK/BBSDK-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "B04D3B55-C164-4FAF-B582-F7D94F403D99";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

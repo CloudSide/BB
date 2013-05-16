@@ -25,11 +25,13 @@ static void myInputBufferHandler(void *inUserData,
         
         int numFrequencies = pow(2,floor(log2(inBuffer->mAudioDataByteSize)));
         
+        /*
         void *temp = (void *)malloc(numFrequencies);
         memcpy(temp, inBuffer->mAudioData, numFrequencies);
+        */
         
         // soundCode:0-31
-        int soundCode = decode_sound(temp, numFrequencies);
+        int soundCode = decode_sound(inBuffer->mAudioData, numFrequencies);
         
         
         // 监听
@@ -57,7 +59,7 @@ static void myInputBufferHandler(void *inUserData,
         }
          
         
-        free(temp);
+        //free(temp);
     }
     
     
@@ -248,10 +250,18 @@ static void myInputBufferHandler(void *inUserData,
     for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
         
         printf("%d ~ ", _allData[i]);
+        
         if ((i+1)%(nNumberOfWatchDog/2)==0) {
+        
             printf("\n");
         }
     }
+    /*
+    for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
+        
+        printf("%d, ", _allData[i]);
+    }
+     */
     
     printf("\n");
     
@@ -262,9 +272,13 @@ static void myInputBufferHandler(void *inUserData,
     printf("\n");
     
     printf("(%d-%d-)", resultCode[0], resultCode[1]);
+    
     for (int i=2; i<20; i++) {
+        
         printf("%d-", resultCode[i]);
     }
+    
+    
     
     RS *rs = init_rs(RS_SYMSIZE, RS_GFPOLY, RS_FCR, RS_PRIM, RS_NROOTS, RS_PAD);
     int eras_pos[RS_TOTAL_LEN] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
