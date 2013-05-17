@@ -6,6 +6,12 @@
 //  Copyright (c) 2013年 Littlebox. All rights reserved.
 //
 
+#ifndef BBSDK_bb_freq_util_h
+#define BBSDK_bb_freq_util_h
+
+
+
+
 #include <complex.h>
 #include <math.h>
 #include <stdbool.h>
@@ -14,13 +20,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "_kiss_fft_guts.h"
-
-#ifndef BBSDK_bb_freq_util_h
-#define BBSDK_bb_freq_util_h
-
-#endif
 
 
 #define PI                      3.1415926535897932384626433832795028841971               //定义圆周率值
@@ -75,3 +75,10 @@ int create_sending_code(unsigned char *src, unsigned char *result, int res_len);
 int decode_sound(void *src, int fft_number);
 
 int fft(void *src, int num);
+
+
+
+
+#endif /* BBSDK_bb_freq_util_h */
+
+
