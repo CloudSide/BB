@@ -751,6 +751,7 @@ int fft(void *src_data, int num)
     }
      */
 
+    KISS_FFT_FREE(fft_cfg);
     kiss_fft_cleanup();
     
     return intFreq;
