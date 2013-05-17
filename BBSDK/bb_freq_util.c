@@ -665,9 +665,10 @@ int decode_sound(void *src, int fft_number)
     int sound_freq = fft(src, fft_number);
     
     /*
-    if (sound_freq>0) {
+    if (sound_freq > 0) {
+     
         int a = -1;
-        freq_to_num(sound_freq,&a);
+        freq_to_num(sound_freq, &a);
         printf("----%d---  %d\n", sound_freq, a);
     }
      */
