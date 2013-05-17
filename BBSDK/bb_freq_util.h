@@ -40,11 +40,11 @@ typedef struct _bb_item_group bb_item_group;
 
 int freq_to_num(unsigned int f, int *n);
 
-int num_to_char(unsigned int n, char *c);
+int num_to_char(int n, char *c);
 
 int char_to_num(char c, unsigned int *n);
 
-int num_to_freq(unsigned int n, unsigned int *f);
+int num_to_freq(int n, unsigned int *f);
 
 int char_to_freq(char c, unsigned int *f);
 

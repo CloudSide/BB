@@ -117,7 +117,7 @@ int freq_to_num(unsigned int f, int *n) {
 	return -1;
 }
 
-int num_to_char(unsigned int n, char *c) {
+int num_to_char(int n, char *c) {
 	
 	if (c != NULL && n>=0 && n<32) {
 		
@@ -151,7 +151,7 @@ int char_to_num(char c, unsigned int *n) {
 	return -1;
 }
 
-int num_to_freq(unsigned int n, unsigned int *f) {
+int num_to_freq(int n, unsigned int *f) {
 	
 	if (f != NULL && n>=0 && n<32) {
 		
