@@ -595,7 +595,7 @@ int post_process(bb_item_group *src, int src_len, bb_item_group *result, int res
 // 一个频率对应的一组PCM的buffer
 int encode_sound(unsigned int freq, float buffer[], size_t buffer_length)
 {
-    const double amplitude = 2.0;
+    const double amplitude = 4.0;
 	double theta_increment = 2.0 * PI * freq / SAMPLE_RATE;
 	int frame;
     
