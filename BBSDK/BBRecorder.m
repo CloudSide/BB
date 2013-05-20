@@ -72,6 +72,9 @@ static void myInputBufferHandler(void *inUserData,
 }
 
 
+@synthesize delegate = _delegate;
+
+
 //void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 //{
 //	//BBRecorder *recorder = (BBRecorder *)inClientData;
@@ -80,6 +83,9 @@ static void myInputBufferHandler(void *inUserData,
 
 - (void)dealloc
 {
+    
+    self.delegate = nil;
+
     [super dealloc];
 }
 
@@ -148,10 +154,15 @@ static void myInputBufferHandler(void *inUserData,
 
 }
 
+
+
 - (void)stop
 {
-    
+    // end recording
+	mIsRunning = false;
+	AudioQueueDispose(mQueue, true);
 }
+
 
 - (void)setupAudioFormat:(UInt32) inFormatID
 {
@@ -290,6 +301,23 @@ static void myInputBufferHandler(void *inUserData,
     }
     
     int count = decode_rs_char(rs, data1, eras_pos, 0);//(unsigned char*)(resultCode+2)
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(bbRecorder:receivedMessage:corrected:)]) {
+        
+        int k;
+        
+        NSMutableString *msg = [NSMutableString stringWithString:@""];
+        
+        for (k=0; k<RS_TOTAL_LEN; k++) {
+            
+            char c;
+            num_to_char(data1[k], &c);
+            
+            [msg appendFormat:@"%c", c];
+        }
+        
+        [self.delegate bbRecorder:self receivedMessage:msg corrected:count>=0];
+    }
     
     printf("\n");
     printf("count  =  %d\n", count);

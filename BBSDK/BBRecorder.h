@@ -40,9 +40,15 @@
 #endif
 
 enum RecordingState {
+    
     LISTEN = 0,
     RECORD = 1
-    };
+};
+
+
+
+@protocol BBRecorderDelegate;
+
 
 @interface BBRecorder : NSObject
 {
@@ -55,13 +61,16 @@ enum RecordingState {
     SInt64						mRecordPacket; // current packet number in record file
     AudioStreamBasicDescription	mRecordFormat;
     int			     			mIsRunning;
-
+    
     
     double                      _sampleRate;
     int                         _recordedCounter;
     int                         _watchDog[nNumberOfWatchDog];
     int                         _allData[nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18];
     enum RecordingState         _listenState;
+    
+    
+    id<BBRecorderDelegate> _delegate;
 }
 
 - (void)setupAudioFormat:(UInt32)inFormatID;
@@ -78,4 +87,20 @@ enum RecordingState {
 
 - (id)initWithSampleRate:(NSInteger)rate;
 
+
+@property (nonatomic, assign) id<BBRecorderDelegate> delegate;
+
+
 @end
+
+
+
+
+
+
+@protocol BBRecorderDelegate <NSObject>
+
+- (void)bbRecorder:(BBRecorder *)bbRecorder receivedMessage:(NSString *)message corrected:(BOOL)corrected;
+
+@end
+

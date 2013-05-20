@@ -12,6 +12,7 @@
 
 #import "BBRecorder.h"
 #import "bb_freq_util.h"
+#import "MainViewController.h"
 
 @interface AppDelegate () {
     
@@ -58,10 +59,11 @@
      */
     
     
-    _recorder = [[BBRecorder alloc] initWithSampleRate:44100]; //758775
-    [_recorder start];
-         
+    MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    self.window.rootViewController = [mainViewController autorelease];
+    
     return YES;
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

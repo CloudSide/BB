@@ -44,20 +44,33 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
     [super dealloc];
 }
 
-- (void)initBBPlayerWithSampleRate:(NSInteger)rate
-{
-    _once = YES;
-    _charIndex = 0;
-	_sampleRate = rate;
+
+- (id)initWithSampleRate:(NSInteger)rate {
+
     
-	OSStatus result = AudioSessionInitialize(NULL, NULL, interruptionListener, self);
-	if (result == kAudioSessionNoError)
-	{
-		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
-		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-	}
-	AudioSessionSetActive(true);
+    if (self = [super init]) {
+        
+        _once = YES;
+        _charIndex = 0;
+        _sampleRate = rate;
+        
+        OSStatus result = AudioSessionInitialize(NULL, NULL, interruptionListener, self);
+        
+        if (result == kAudioSessionNoError) {
+            
+            //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+            UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+            
+            
+            AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+        }
+        
+        AudioSessionSetActive(true);
+    }
+    
+    return self;
 }
+
 
 - (void)createToneUnit
 {
@@ -70,7 +83,8 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	defaultOutputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
 	defaultOutputDescription.componentFlags = 0;
 	defaultOutputDescription.componentFlagsMask = 0;
-	
+    
+
 	// Get the default playback output unit
 	AudioComponent defaultOutput = AudioComponentFindNext(NULL, &defaultOutputDescription);
 	NSAssert(defaultOutput, @"Can't find default output");
@@ -78,7 +92,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// Create a new unit based on this that we'll use for output
 	OSErr err = AudioComponentInstanceNew(defaultOutput, &toneUnit);
 	NSAssert1(toneUnit, @"Error creating unit: %hd", err);
-	
+    
 	// Set our tone rendering function on the unit
 	AURenderCallbackStruct input;
 	input.inputProc = RenderTone;
@@ -112,11 +126,13 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
                                 &streamFormat,
                                 sizeof(AudioStreamBasicDescription));
 	NSAssert1(err == noErr, @"Error setting stream format: %hd", err);
+    
 }
 
 - (void)play:(NSString *)message
 {
     if ([message isEqualToString:@""]) {
+    
         return;
     }
     
@@ -133,8 +149,8 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
                                                  repeats: YES];
 }
 
-- (void)stop
-{
+- (void)stop {
+    
     AudioOutputUnitStop(toneUnit);
     AudioUnitUninitialize(toneUnit);
     AudioComponentInstanceDispose(toneUnit);
@@ -159,8 +175,24 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
             _once = NO;
             [self createToneUnit];
             
+            //OSErr err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            OSErr err = AudioUnitSetParameter(toneUnit, kHALOutputParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kAUGroupParameterID_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kMatrixMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            
+            
+            err = AudioUnitSetParameter(toneUnit, kHALOutputParam_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kAUGroupParameterID_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            err = AudioUnitSetParameter(toneUnit, kMatrixMixerParam_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
+            
+            
+            //err = AudioUnitSetParameter(toneUnit, kMusicDeviceParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            NSAssert1(err == noErr, @"Error SetParameter unit: %hd", err);
+            
             // Stop changing parameters on the unit
-            OSErr err = AudioUnitInitialize(toneUnit);
+            err = AudioUnitInitialize(toneUnit);
             NSAssert1(err == noErr, @"Error initializing unit: %hd", err);
             
             // Start playback

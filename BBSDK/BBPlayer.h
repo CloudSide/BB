@@ -25,7 +25,8 @@
 
 @property (nonatomic, retain) NSTimer  *timer;
 
-- (void)initBBPlayerWithSampleRate:(NSInteger)rate;
+
+- (id)initWithSampleRate:(NSInteger)rate;
 - (void)createToneUnit;
 - (void)play:(NSString *)message;
 - (void)stop;

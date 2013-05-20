@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F7C03AC174A03DD00D3C387 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C03AA174A03DD00D3C387 /* MainViewController.m */; };
+		3F7C03AD174A03DD00D3C387 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C03AB174A03DD00D3C387 /* MainViewController.xib */; };
 		5029493A17408F510097ABBE /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = 5029493817408F510097ABBE /* rscode.c */; };
 		5059DDA917376BAF002581C0 /* bb_freq_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 5059DDA817376BAF002581C0 /* bb_freq_util.c */; };
 		505B982A171E8E22001B46F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 505B9829171E8E22001B46F1 /* UIKit.framework */; };
@@ -26,6 +28,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F7C03A9174A03DD00D3C387 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		3F7C03AA174A03DD00D3C387 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		3F7C03AB174A03DD00D3C387 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		5029493817408F510097ABBE /* rscode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rscode.c; sourceTree = "<group>"; };
 		5029493917408F510097ABBE /* rscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rscode.h; sourceTree = "<group>"; };
 		5059DDA817376BAF002581C0 /* bb_freq_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bb_freq_util.c; sourceTree = "<group>"; };
@@ -112,6 +117,9 @@
 				505B9857171E9147001B46F1 /* BBPlayer.m */,
 				505B9859171EAFCA001B46F1 /* BBRecorder.h */,
 				505B985A171EAFCA001B46F1 /* BBRecorder.m */,
+				3F7C03A9174A03DD00D3C387 /* MainViewController.h */,
+				3F7C03AA174A03DD00D3C387 /* MainViewController.m */,
+				3F7C03AB174A03DD00D3C387 /* MainViewController.xib */,
 				505B9830171E8E22001B46F1 /* Supporting Files */,
 			);
 			path = BBSDK;
@@ -201,6 +209,7 @@
 				505B983C171E8E22001B46F1 /* Default.png in Resources */,
 				505B983E171E8E22001B46F1 /* Default@2x.png in Resources */,
 				505B9840171E8E22001B46F1 /* Default-568h@2x.png in Resources */,
+				3F7C03AD174A03DD00D3C387 /* MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +227,7 @@
 				5059DDA917376BAF002581C0 /* bb_freq_util.c in Sources */,
 				5029493A17408F510097ABBE /* rscode.c in Sources */,
 				5093A73317437D7B00D5040F /* kiss_fft.c in Sources */,
+				3F7C03AC174A03DD00D3C387 /* MainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
