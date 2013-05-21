@@ -7,6 +7,7 @@
 //
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "BBPlayer.h"
 #include "bb_header.h"
@@ -61,7 +62,6 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
             //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
             UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
             
-            
             AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
         }
         
@@ -93,6 +93,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	OSErr err = AudioComponentInstanceNew(defaultOutput, &toneUnit);
 	NSAssert1(toneUnit, @"Error creating unit: %hd", err);
     
+    
 	// Set our tone rendering function on the unit
 	AURenderCallbackStruct input;
 	input.inputProc = RenderTone;
@@ -117,7 +118,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	streamFormat.mBytesPerPacket = four_bytes_per_float;
 	streamFormat.mFramesPerPacket = 1;
 	streamFormat.mBytesPerFrame = four_bytes_per_float;
-	streamFormat.mChannelsPerFrame = 1;
+	streamFormat.mChannelsPerFrame = 2;
 	streamFormat.mBitsPerChannel = four_bytes_per_float * eight_bits_per_byte;
 	err = AudioUnitSetProperty (toneUnit,
                                 kAudioUnitProperty_StreamFormat,
@@ -151,6 +152,11 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)stop {
     
+    
+    //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+    
     AudioOutputUnitStop(toneUnit);
     AudioUnitUninitialize(toneUnit);
     AudioComponentInstanceDispose(toneUnit);
@@ -175,21 +181,14 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
             _once = NO;
             [self createToneUnit];
             
+            UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+            AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+            
             //OSErr err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            OSErr err = AudioUnitSetParameter(toneUnit, kHALOutputParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kAUGroupParameterID_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kMatrixMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
+            //set the volume levels on the two input channels to the toneGenerator
             
             
-            err = AudioUnitSetParameter(toneUnit, kHALOutputParam_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kAUGroupParameterID_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            err = AudioUnitSetParameter(toneUnit, kMatrixMixerParam_Volume, kAudioUnitScope_Output, 1, 1.0, 0);
-            
-            
-            //err = AudioUnitSetParameter(toneUnit, kMusicDeviceParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);
-            NSAssert1(err == noErr, @"Error SetParameter unit: %hd", err);
+            OSErr err;
             
             // Stop changing parameters on the unit
             err = AudioUnitInitialize(toneUnit);

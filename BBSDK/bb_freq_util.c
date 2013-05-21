@@ -558,6 +558,7 @@ int post_process(bb_item_group *src, int src_len, bb_item_group *result, int res
 		
 		if (src[i].item == -1) {
             
+            
             if (src[i].count == 4 && src[i+1].item == -1) {
 				
 				result[index].item = src[i].item = 0;
@@ -593,19 +594,20 @@ int post_process(bb_item_group *src, int src_len, bb_item_group *result, int res
 /////////////////////
 
 // 一个频率对应的一组PCM的buffer
-int encode_sound(unsigned int freq, float buffer[], size_t buffer_length)
-{
-    const double amplitude = 4.0;
+int encode_sound(unsigned int freq, float buffer[], size_t buffer_length) {
+    
+    
+    const double amplitude = 1.0;
 	double theta_increment = 2.0 * PI * freq / SAMPLE_RATE;
 	int frame;
     
-	for (frame = 0; frame < buffer_length; frame++)
-	{
+	for (frame = 0; frame < buffer_length; frame++) {
+        
 		buffer[frame] = sin(theta) * amplitude;
-		
 		theta += theta_increment;
-		if (theta > 2.0 * PI)
-		{
+		
+        if (theta > 2.0 * PI) {
+            
 			theta -= 2.0 * PI;
 		}
 	}
@@ -698,7 +700,7 @@ int fft(void *src_data, int num)
     
     for (i=0; i<num; i++) {
         
-        in_data[i].r = (double)((unsigned char *)src_data)[i];
+        in_data[i].r = (double)((unsigned char *)src_data)[i] * 0.92;
         in_data[i].i = 0;
     }
 
@@ -737,6 +739,8 @@ int fft(void *src_data, int num)
     
     double tmpFreq = (44100 / 2.0) * maxIndx / (size / 2);
     int intFreq = (int) tmpFreq;
+    
+    //printf("---%d\n", intFreq);
     
     /*
     if (intFreq > 40000) {

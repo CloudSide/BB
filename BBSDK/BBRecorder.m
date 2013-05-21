@@ -23,7 +23,7 @@ static void myInputBufferHandler(void *inUserData,
 
     if (inNumPackets > 0) {
         
-        int numFrequencies = pow(2,floor(log2(inBuffer->mAudioDataByteSize)));
+        int numFrequencies = pow(2, floor(log2(inBuffer->mAudioDataByteSize)));
         
         /*
         void *temp = (void *)malloc(numFrequencies);
@@ -143,6 +143,9 @@ static void myInputBufferHandler(void *inUserData,
     
     // allocate and enqueue buffers
     bufferByteSize = [self computeRecordBufferSize:&mRecordFormat withSecond:kBufferDurationSeconds];// enough bytes for half a second
+    
+    //bufferByteSize = bufferByteSize + 2;
+    
     for (i = 0; i < kNumberRecordBuffers; ++i) {
         
         AudioQueueAllocateBuffer(mQueue, bufferByteSize, &mBuffers[i]);

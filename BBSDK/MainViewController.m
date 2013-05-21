@@ -10,6 +10,7 @@
 #import "BBRecorder.h"
 #import "BBPlayer.h"
 #import "bb_freq_util.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface MainViewController () <BBRecorderDelegate> {
 
@@ -38,9 +39,7 @@
 
 - (void)viewDidLoad {
     
-    
     [self startListen];
-    
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
