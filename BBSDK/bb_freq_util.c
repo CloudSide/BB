@@ -2,6 +2,7 @@
 #include "bb_freq_util.h"
 
 #include "rscode.h"
+#include "kiss_fastfir.h"
 
 
 /*static */unsigned int frequencies[32];
@@ -700,10 +701,24 @@ int fft(void *src_data, int num)
     
     for (i=0; i<num; i++) {
         
-        in_data[i].r = (double)((unsigned char *)src_data)[i] * 0.92;
+        in_data[i].r = (double)((unsigned char *)src_data)[i];
         in_data[i].i = 0;
     }
 
+    /*
+    size_t nfft;
+    
+    kiss_fastfir_cfg fastfir_cfg = kiss_fastfir_alloc(in_data, num, &nfft, NULL, NULL);
+    
+    size_t offset;
+    kiss_fft_cpx outbuf[BB_MAX_FFT_SIZE];
+    
+    size_t nffir = kiss_fastfir(fastfir_cfg, in_data, outbuf, num, &offset);
+    
+    KISS_FFT_FREE(fastfir_cfg);
+     */
+    
+    
     kiss_fft_cfg fft_cfg = kiss_fft_alloc(num, 0, NULL, NULL);
     kiss_fft(fft_cfg, in_data, out_data);
     

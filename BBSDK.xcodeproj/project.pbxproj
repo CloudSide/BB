@@ -10,6 +10,8 @@
 		3F7C03AC174A03DD00D3C387 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C03AA174A03DD00D3C387 /* MainViewController.m */; };
 		3F7C03AD174A03DD00D3C387 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C03AB174A03DD00D3C387 /* MainViewController.xib */; };
 		3F7C03B9174B465C00D3C387 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C03B7174B464800D3C387 /* AVFoundation.framework */; };
+		3F7C03C0174C7E6300D3C387 /* kiss_fastfir.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C03BD174C7E6200D3C387 /* kiss_fastfir.c */; };
+		3F7C03C1174C7E6300D3C387 /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C03BE174C7E6200D3C387 /* kiss_fftr.c */; };
 		5029493A17408F510097ABBE /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = 5029493817408F510097ABBE /* rscode.c */; };
 		5059DDA917376BAF002581C0 /* bb_freq_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 5059DDA817376BAF002581C0 /* bb_freq_util.c */; };
 		505B982A171E8E22001B46F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 505B9829171E8E22001B46F1 /* UIKit.framework */; };
@@ -33,6 +35,10 @@
 		3F7C03AA174A03DD00D3C387 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		3F7C03AB174A03DD00D3C387 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		3F7C03B7174B464800D3C387 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		3F7C03BD174C7E6200D3C387 /* kiss_fastfir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fastfir.c; sourceTree = "<group>"; };
+		3F7C03BE174C7E6200D3C387 /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fftr.c; sourceTree = "<group>"; };
+		3F7C03BF174C7E6200D3C387 /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fftr.h; sourceTree = "<group>"; };
+		3F7C03C2174C7EB500D3C387 /* kiss_fastfir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kiss_fastfir.h; sourceTree = "<group>"; };
 		5029493817408F510097ABBE /* rscode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rscode.c; sourceTree = "<group>"; };
 		5029493917408F510097ABBE /* rscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rscode.h; sourceTree = "<group>"; };
 		5059DDA817376BAF002581C0 /* bb_freq_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bb_freq_util.c; sourceTree = "<group>"; };
@@ -150,6 +156,10 @@
 				5093A73017437D7B00D5040F /* _kiss_fft_guts.h */,
 				5093A73217437D7B00D5040F /* kiss_fft.h */,
 				5093A73117437D7B00D5040F /* kiss_fft.c */,
+				3F7C03BF174C7E6200D3C387 /* kiss_fftr.h */,
+				3F7C03BE174C7E6200D3C387 /* kiss_fftr.c */,
+				3F7C03C2174C7EB500D3C387 /* kiss_fastfir.h */,
+				3F7C03BD174C7E6200D3C387 /* kiss_fastfir.c */,
 				5029493917408F510097ABBE /* rscode.h */,
 				5029493817408F510097ABBE /* rscode.c */,
 				5059DDAA17376BE1002581C0 /* bb_freq_util.h */,
@@ -232,6 +242,8 @@
 				5029493A17408F510097ABBE /* rscode.c in Sources */,
 				5093A73317437D7B00D5040F /* kiss_fft.c in Sources */,
 				3F7C03AC174A03DD00D3C387 /* MainViewController.m in Sources */,
+				3F7C03C0174C7E6300D3C387 /* kiss_fastfir.c in Sources */,
+				3F7C03C1174C7E6300D3C387 /* kiss_fftr.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
