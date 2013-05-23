@@ -763,10 +763,7 @@ int fft(void *src_data, int num)
             } else {
                 
                 ff = 10700.;
-                
             }
-        
-            
         }
         
         
