@@ -730,11 +730,52 @@ int fft(void *src_data, int num)
     for (i=1; i<size*4/5; i++)
     {
         
-        double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
         
+        float ff;
+        float fff = (44100 / 2.0) * i / (size / 2);
+        
+        if (fff < 1720) {
+            
+            continue;
+        
+        } else {
+        
+            if (fff < 4000) {
+                
+                ff = 18700.;
+            
+            } else if (fff < 6000) {
+            
+                ff = 17700.;
+                
+            } else if (fff < 8000) {
+                
+                ff = 15700.;
+            
+            } else if (fff < 10000) {
+                
+                ff = 13700.;
+                
+            } else if (fff < 12000) {
+                
+                ff = 12700.;
+                
+            } else {
+                
+                ff = 10700.;
+                
+            }
+        
+            
+        }
+        
+        
+        
+        double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
+    
         //printf("%f\n", out_data_item);
         
-        if (out_data_item > maxFreq)
+        if (out_data_item > maxFreq && out_data_item > ff)
         {
             maxFreq = out_data_item;
             maxIndx = i;
@@ -758,7 +799,7 @@ int fft(void *src_data, int num)
     //printf("---%d\n", intFreq);
     
     /*
-    if (intFreq > 40000) {
+    if (intFreq > 40000 || 1) {
         
         printf("-----------------------------------------");
         for (i=0; i<num; i++) {
@@ -770,6 +811,7 @@ int fft(void *src_data, int num)
         int aaaaaaa = 5;
     }
      */
+     
 
     KISS_FFT_FREE(fft_cfg);
     kiss_fft_cleanup();
