@@ -748,10 +748,10 @@ int fft(void *src_data, int num)
                 
                 ff = 13600;
             
-            } else if (n >= 20) {
-            
+            } /*else if (n >= 20) {
+                
                 ff = 12400;
-            }
+            }*/
         }
         
         
