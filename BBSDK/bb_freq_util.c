@@ -742,32 +742,16 @@ int fft(void *src_data, int num)
         
         } else {
         
-            if (fff < 4000) {
-                
-                ff = 18700.;
+            ff = 18800;
             
-            } else if (fff < 6000) {
+            if (n >= 12) {
+                
+                ff = 13600;
             
-                ff = 17700.;
-                
-            } else if (fff < 8000) {
-                
-                ff = 15700.;
+            } else if (n >= 20) {
             
-            } else if (fff < 10000) {
-                
-                ff = 13700.;
-                
-            } else if (fff < 12000) {
-                
-                ff = 12700.;
-                
-            } else {
-                
-                ff = 10700.;
+                ff = 12400;
             }
-            
-            ff = 250.0;
         }
         
         
