@@ -742,11 +742,11 @@ int fft(void *src_data, int num)
         
         } else {
         
-            ff = 18800;
+            ff = 19000;
             
-            if (n >= 12) {
+            if (n >= 13) {
                 
-                ff = 13600;
+                ff = 14500;
             
             } /*else if (n >= 20) {
                 
