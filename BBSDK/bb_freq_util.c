@@ -734,7 +734,9 @@ int fft(void *src_data, int num)
         float ff;
         float fff = (44100 / 2.0) * i / (size / 2);
         
-        if (fff < 1720) {
+        int n;
+        
+        if (freq_to_num(fff, &n) == -1) {
             
             continue;
         
@@ -764,6 +766,8 @@ int fft(void *src_data, int num)
                 
                 ff = 10700.;
             }
+            
+            ff = 250.0;
         }
         
         
