@@ -29,7 +29,7 @@
 #define BB_SEMITONE 			1.05946311
 #define BB_BASEFREQUENCY		1760
 #define BB_CHARACTERS			"0123456789abcdefghijklmnopqrstuv"
-#define BB_THRESHOLD            40
+#define BB_THRESHOLD            25
 
 #define BB_HEADER_0             17
 #define BB_HEADER_1             19

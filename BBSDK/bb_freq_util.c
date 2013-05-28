@@ -91,7 +91,7 @@ int freq_to_num(unsigned int f, int *n) {
             frequencies[i] = freq;
             
             if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(BB_SEMITONE, i)) {
-                
+            //if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(1.029, i)) {
                 *n = i;
                 return 0;
             }
@@ -342,7 +342,7 @@ int statistics(int *src, int src_len, int *result, int res_len) {
         result[0] = c[0].item;
         result[1] = c[1].item;
         
-        if (c[res_len].item != -2) {
+        if (c[res_len].item != -2 && c[2].item == 19 && c[res_len].item != c[res_len-1].item) {
             
             for (i=2; i<res_len; i++) {
                 
@@ -727,45 +727,41 @@ int fft(void *src_data, int num)
     int maxIndx = 0;
     int maxEqual = 0;
     
-    for (i=1; i<size*4/5; i++)
-    {
-        
-        
-        float ff;
-        float fff = (44100 / 2.0) * i / (size / 2);
+    float bowl[32];
+    int bowl_count[32];
+    
+    for (int i=0; i<32; i++) {
+        bowl[i] = 0.0;
+        bowl_count[i] = 0;
+    }
+    
+    for (int i = 1; i<size*4/5; i++) {
         
         int n;
+        float fff = (44100 / 2.0) * i / (size / 2);
+        double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
         
-        if (freq_to_num(fff, &n) == -1) {
-            
+        if (out_data_item<9000) {
             continue;
-        
-        } else {
-        
-            ff = 19000;
-            
-            if (n >= 13) {
-                
-                ff = 14500;
-            
-            } /*else if (n >= 20) {
-                
-                ff = 12400;
-            }*/
         }
         
-        
-        
-        double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
+        if (freq_to_num(fff, &n) != -1) {
+            
+            bowl[n] += out_data_item;
+            bowl_count[n]++;
+        }
+    }
     
-        //printf("%f\n", out_data_item);
+    for (i=0; i<32; i++) {
         
-        if (out_data_item > maxFreq && out_data_item > ff)
+        float a = bowl[i]/ bowl_count[i];
+        
+        if (a > maxFreq)
         {
-            maxFreq = out_data_item;
+            maxFreq = a;
             maxIndx = i;
         }
-        else if (out_data_item == maxFreq)
+        else if (a == maxFreq)
         {
             maxEqual++;
             
@@ -778,8 +774,66 @@ int fft(void *src_data, int num)
         }
     }
     
-    double tmpFreq = (44100 / 2.0) * maxIndx / (size / 2);
-    int intFreq = (int) tmpFreq;
+//    for (i=1; i<size*4/5; i++)
+//    {
+//        
+//        
+//        float ff;
+//        float fff = (44100 / 2.0) * i / (size / 2);
+//        
+//        int n;
+//        
+//        if (freq_to_num(fff, &n) == -1) {
+//            
+//            continue;
+//        
+//        } else {
+//        
+//            ff = 19000;
+//            
+//            if (n >= 13) {
+//                
+//                ff = 14500;
+//            
+//            } /*else if (n >= 20) {
+//                
+//                ff = 12400;
+//            }*/
+//        }
+//        
+//        
+//        
+//        double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
+//    
+//        //printf("%f\n", out_data_item);
+//        
+//        if (out_data_item > maxFreq && out_data_item > ff)
+//        {
+//            maxFreq = out_data_item;
+//            maxIndx = i;
+//        }
+//        else if (out_data_item == maxFreq)
+//        {
+//            maxEqual++;
+//            
+//            if (maxFreq > 0.0)
+//            {
+//            }
+//        }
+//        else
+//        {
+//        }
+//    }
+//
+
+    
+    //double tmpFreq = (44100 / 2.0) * maxIndx / (size / 2);
+    unsigned int intFreq;
+    num_to_freq(maxIndx, &intFreq);
+    
+//    for (int i=0; i<32; i++) {
+//        printf("%f ~ %d \n", bowl[i], i);
+//    }
     
     //printf("---%d\n", intFreq);
     

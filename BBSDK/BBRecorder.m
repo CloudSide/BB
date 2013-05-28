@@ -228,16 +228,17 @@ static void myInputBufferHandler(void *inUserData,
     _watchDog[nNumberOfWatchDog-1] = code;
     
     
-    if (_watchDog[0] == 17) {
+    if (_watchDog[0] == 17 && _watchDog[1] == 17 && _watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) {
         
-        for (int i=1; i<nNumberOfWatchDog; i++) {
-            
-            if (_watchDog[i]==19) {
-                
-                [self listenFinished];
-                break;
-            }
-        }
+//        for (int i=1; i<nNumberOfWatchDog; i++) {
+//            
+//            if (_watchDog[nNumberOfWatchDog-1]==19) {
+//                
+//                [self listenFinished];
+//                break;
+//            }
+//        }
+        [self listenFinished];
     }
 }
 
