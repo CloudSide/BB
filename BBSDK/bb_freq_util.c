@@ -5,7 +5,7 @@
 #include "kiss_fastfir.h"
 
 
-/*static */unsigned int frequencies[32];
+/*static */float frequencies[32] = BB_FREQUENCIES;
 /*static */double theta = 0;
 
 struct _bb_item_group {
@@ -33,7 +33,9 @@ void freq_init() {
 		
 		return;
 	}
-	
+    
+
+    /*
 	printf("----------------------\n");
 	
 	int i, len;
@@ -42,27 +44,10 @@ void freq_init() {
 		
 		unsigned int freq = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, i));
 		frequencies[i] = freq;
-		
-        /*
-		if (i>0) {
-			
-			int spacing = (freq - frequencies[i-1]) / 2;
-			
-			freq_range[i-1].end = frequencies[i] - spacing - BB_THRESHOLD;
-			freq_range[i].start = frequencies[i] - spacing + BB_THRESHOLD;
-			
-			if (i==1) {
-                
-				freq_range[0].start = frequencies[0] - spacing + BB_THRESHOLD;
-			} else if (i==len-1) {
-				
-				freq_range[i].end = frequencies[i] + spacing - BB_THRESHOLD;
-			}
-		}
-         */
+    
 	}
 	
-	
+	*/
 	/*
      for (i=0, len = strlen(BB_CHARACTERS); i<len; ++i) {
      
@@ -104,14 +89,14 @@ int freq_to_num(unsigned int f, int *n) {
     
     
     if (n != NULL &&
-        f >= BB_FREQUENCIES[0]-BB_THRESHOLD &&
-        f <= BB_FREQUENCIES[31]+BB_THRESHOLD) {
+        f >= frequencies[0]-BB_THRESHOLD &&
+        f <= frequencies[31]+BB_THRESHOLD) {
         
         unsigned int i;
         
         for (i=0; i<32; i++) {
             
-            if (abs(BB_FREQUENCIES[i] - f) <= BB_THRESHOLD) {
+            if (abs(frequencies[i] - f) <= BB_THRESHOLD) {
 
                 *n = i;
                 return 0;
@@ -178,7 +163,7 @@ int num_to_freq(int n, unsigned int *f) {
 	if (f != NULL && n>=0 && n<32) {
 		
 		//*f =  (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, n));
-		*f =  (unsigned int)floor(BB_FREQUENCIES[n]);
+		*f =  (unsigned int)floor(frequencies[n]);
         
         
 		return 0;
