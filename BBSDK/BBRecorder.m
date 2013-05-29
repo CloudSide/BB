@@ -228,8 +228,11 @@ static void myInputBufferHandler(void *inUserData,
     _watchDog[nNumberOfWatchDog-1] = code;
     
     
-    if (_watchDog[0] == 17 && _watchDog[1] == 17 && _watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) {
-        
+    //if (_watchDog[0] == 17 && _watchDog[1] == 17 && _watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) {
+    if (((_watchDog[0] == 17 && _watchDog[1] == 17) || (_watchDog[0] == 17 && _watchDog[2] == 17)) &&
+        ((_watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) || (_watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 3] == 19) || (_watchDog[nNumberOfWatchDog - 2] == 19 && _watchDog[nNumberOfWatchDog - 3] == 19))) {
+//    if (_watchDog[0] == 17 ) {
+//
 //        for (int i=1; i<nNumberOfWatchDog; i++) {
 //            
 //            if (_watchDog[nNumberOfWatchDog-1]==19) {
@@ -282,7 +285,27 @@ static void myInputBufferHandler(void *inUserData,
     
     int resultCode[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     
-    statistics(_allData, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
+    //statistics(_allData, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
+    
+    int b[63];
+	int c[63];
+	
+	_medianfilter(_allData, b, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
+	_medianfilter(b, c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
+    statistics_2(c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
+    
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
+        
+        printf("%d ~ ", c[i]);
+        
+        if ((i+1)%(nNumberOfWatchDog/2)==0) {
+            
+            printf("\n");
+        }
+    }
+    
+    printf("\n");
     
     printf("\n");
     

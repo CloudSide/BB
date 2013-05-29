@@ -29,12 +29,14 @@
 #define BB_SEMITONE 			1.05946311
 #define BB_BASEFREQUENCY		1760
 #define BB_CHARACTERS			"0123456789abcdefghijklmnopqrstuv"
-#define BB_THRESHOLD            25
+#define BB_THRESHOLD            20
 
 #define BB_HEADER_0             17
 #define BB_HEADER_1             19
 
 typedef struct _bb_item_group bb_item_group;
+
+typedef int element;
 
 //void freq_init();
 
@@ -76,8 +78,13 @@ int decode_sound(void *src, int fft_number);
 
 int fft(void *src, int num);
 
+/////////
 
+int statistics_2(int *src, int src_len, int *result, int res_len);
+int process_group_2(bb_item_group *src, int src_len);
+int post_process_2(bb_item_group *src, int src_len, bb_item_group *result, int res_len);
 
+void _medianfilter(const element* signal, element* result, int N);
 
 #endif /* BBSDK_bb_freq_util_h */
 

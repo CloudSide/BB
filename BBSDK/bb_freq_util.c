@@ -91,7 +91,7 @@ int freq_to_num(unsigned int f, int *n) {
             frequencies[i] = freq;
             
             if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(BB_SEMITONE, i)) {
-            //if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(1.029, i)) {
+            //if (abs(frequencies[i] - f) <= BB_THRESHOLD) {
                 *n = i;
                 return 0;
             }
@@ -433,6 +433,9 @@ int set_group(int *src, int src_len, bb_item_group *result, int res_len) {
 		result[i].item = -2;
 		result[i].count = 0;
 	}
+    
+    src[0] = src[1] = src[2] = 17;
+    src[3] = src[4] = src[5] = 19;
 	
 	result[0].item = src[0];
 	result[0].count++;
@@ -741,11 +744,19 @@ int fft(void *src_data, int num)
         float fff = (44100 / 2.0) * i / (size / 2);
         double out_data_item = sqrt(pow(out_data[i].r, 2) + pow(out_data[i].i, 2));
         
-        if (out_data_item<9000) {
-            continue;
-        }
-        
         if (freq_to_num(fff, &n) != -1) {
+            
+            float thresh;
+            
+            if (n>16) {
+                thresh = 1500*pow(BB_SEMITONE, n);
+            } else {
+                thresh = 1500*pow(BB_SEMITONE, 32-n);
+            }
+            
+            if (out_data_item<thresh) {
+                continue;
+            }
             
             bowl[n] += out_data_item;
             bowl_count[n]++;
@@ -856,4 +867,178 @@ int fft(void *src_data, int num)
     kiss_fft_cleanup();
     
     return intFreq;
+}
+
+
+////////
+
+int statistics_2(int *src, int src_len, int *result, int res_len) {
+    
+    if (src==NULL || result==NULL || src_len==0 || res_len==0) {
+        
+        return -1;
+    }
+    
+    // Littlebox-XXOO
+    
+    bb_item_group a[32*3];
+//    bb_item_group b[32*3];
+    bb_item_group c[32*3];
+    
+    int i;
+    int step = 0;
+    
+	int stat = set_group(src, src_len, a, 32) == 0 &&
+    ++step &&
+    process_group_2(a, 32) == 0 &&
+    ++step &&
+    post_process_2(a, 32, c, 32) == 0 &&
+    ++step;
+	
+    if (stat) {
+        
+        result[0] = c[0].item;
+        result[1] = c[1].item;
+        
+        
+        if (c[res_len].item != -2 && c[2].item == 19 && c[res_len].item != c[res_len-1].item) {
+            
+            for (i=2; i<res_len; i++) {
+                
+                result[i] = c[i+1].item;
+            }
+            
+        } else {
+            
+            for (i=2; i<res_len; i++) {
+                
+                if (c[i].item == -2) {
+                    
+                    result[i] = 0;
+                    
+                } else {
+                    
+                    result[i] = c[i].item;
+                }
+            }
+        }
+    }
+    
+    printf("step: %d\n", step);
+    
+    return stat ? -1 : 0;
+}
+
+int process_group_2(bb_item_group *src, int src_len) {
+	
+	if (src==NULL || src_len <= 0) {
+		return -1;
+	}
+	
+	int i;
+        
+    for (i=1; i<src_len-2; i++) {
+        
+        if (src[i].count != 0 && src[i].count == 1 && src[i+1].count == 1 && src[i+2].count == 1) {
+            
+            if (src[i-1].count > src[i+3].count) {
+                
+                src[i].count = 0;
+                src[i+1].count = 0;
+                src[i+2].count = 2;
+                
+            } else {
+                
+                src[i].count = 2;
+                src[i+1].count = 0;
+                src[i+2].count = 0;
+            }
+            
+        } else if (src[i].count != 0 && src[i].count == 1 && src[i+1].count == 1) {
+            
+            if (src[i-1].count + src[i+1].count + src[i].count <= 8) {
+                
+                src[i].count = 0;
+                src[i+1].count = 0;
+                
+            } else {
+                src[i].count = 0;
+                src[i+1].count = 2;
+            }
+            
+        } else if (src[i].count != 0 && src[i].count == 1) {
+            
+            if (src[i-1].count + src[i+1].count + src[i].count <= 8) {
+                src[i].count = 0;
+            } else {
+                src[i].count = 2;
+            }
+        }
+        
+    }
+    
+	return 0;
+}
+
+int post_process_2(bb_item_group *src, int src_len, bb_item_group *result, int res_len) {
+	
+	if (src==NULL || result==NULL || src_len <= 0 || res_len <= 0) {
+		return -1;
+	}
+	
+	int i;
+	int index = 1;
+	
+	for (i=0; i<res_len; i++) {
+		result[i].item = -2;
+		result[i].count = 0;
+	}
+	
+	result[0].item = src[0].item;
+	result[0].count = src[0].count;
+	
+	for (i=1; i<src_len-1; i++) {
+		
+		if (src[i].count == 0) {
+            
+            continue;
+            
+		} else {
+			
+			result[index].item = src[i].item;
+			result[index].count = src[i].count;
+			index++;
+		}
+	}
+    
+	return 0;
+}
+
+void _medianfilter(const element* signal, element* result, int N)
+{
+    //   Move window through all elements of the signal
+    for (int i = 1; i < N - 1; ++i)
+    {
+        //   Pick up window elements
+        element window[3];
+        for (int j = 0; j < 3; ++j)
+            window[j] = signal[i - 1 + j];
+        //   Order elements (only half of them)
+        for (int j = 0; j < 2; ++j)
+        {
+            //   Find position of minimum element
+            int min = j;
+            for (int k = j + 1; k < 3; ++k)
+                if (window[k] < window[min])
+                    min = k;
+            //   Put found minimum element in its place
+            const element temp = window[j];
+            window[j] = window[min];
+            window[min] = temp;
+        }
+        //   Get result - the middle element
+        result[i] = window[1];
+    }
+	
+	result[0] = signal[0];
 }
