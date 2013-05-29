@@ -76,8 +76,10 @@ void freq_init() {
 
 int freq_to_num(unsigned int f, int *n) {
 	
+    /*
     frequencies[0] = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, 0));
     frequencies[31] = (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, 31));
+    
     
     if (n != NULL &&
         f >= frequencies[0]-BB_THRESHOLD*pow(BB_SEMITONE, 0) &&
@@ -92,6 +94,25 @@ int freq_to_num(unsigned int f, int *n) {
             
             if (abs(frequencies[i] - f) <= BB_THRESHOLD*pow(BB_SEMITONE, i)) {
             //if (abs(frequencies[i] - f) <= BB_THRESHOLD) {
+                *n = i;
+                return 0;
+            }
+        }
+    }
+     */
+    
+    
+    
+    if (n != NULL &&
+        f >= BB_FREQUENCIES[0]-BB_THRESHOLD &&
+        f <= BB_FREQUENCIES[31]+BB_THRESHOLD) {
+        
+        unsigned int i;
+        
+        for (i=0; i<32; i++) {
+            
+            if (abs(BB_FREQUENCIES[i] - f) <= BB_THRESHOLD) {
+
                 *n = i;
                 return 0;
             }
@@ -156,8 +177,10 @@ int num_to_freq(int n, unsigned int *f) {
 	
 	if (f != NULL && n>=0 && n<32) {
 		
-		*f =  (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, n));
-		
+		//*f =  (unsigned int)floor(BB_BASEFREQUENCY * pow(BB_SEMITONE, n));
+		*f =  (unsigned int)floor(BB_FREQUENCIES[n]);
+        
+        
 		return 0;
 	}
 	
