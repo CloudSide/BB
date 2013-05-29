@@ -5,7 +5,7 @@
 #include "kiss_fastfir.h"
 
 
-/*static */float frequencies[32] = BB_FREQUENCIES;
+const float frequencies[32] = BB_FREQUENCIES;
 /*static */double theta = 0;
 
 struct _bb_item_group {
