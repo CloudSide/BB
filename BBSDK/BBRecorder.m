@@ -228,14 +228,14 @@ static void myInputBufferHandler(void *inUserData,
     _watchDog[nNumberOfWatchDog-1] = code;
     
     
-    //if (_watchDog[0] == 17 && _watchDog[1] == 17 && _watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) {
-    if (((_watchDog[0] == 17 && _watchDog[1] == 17) || (_watchDog[0] == 17 && _watchDog[2] == 17)) &&
-        ((_watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 2] == 19) || (_watchDog[nNumberOfWatchDog - 1] == 19 && _watchDog[nNumberOfWatchDog - 3] == 19) || (_watchDog[nNumberOfWatchDog - 2] == 19 && _watchDog[nNumberOfWatchDog - 3] == 19))) {
-//    if (_watchDog[0] == 17 ) {
+    //if (_watchDog[0] == BB_HEADER_0 && _watchDog[1] == BB_HEADER_0 && _watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1) {
+    if (((_watchDog[0] == BB_HEADER_0 && _watchDog[1] == BB_HEADER_0) || (_watchDog[0] == BB_HEADER_0 && _watchDog[2] == BB_HEADER_0)) &&
+        ((_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1))) {
+//    if (_watchDog[0] == BB_HEADER_0 ) {
 //
 //        for (int i=1; i<nNumberOfWatchDog; i++) {
 //            
-//            if (_watchDog[nNumberOfWatchDog-1]==19) {
+//            if (_watchDog[nNumberOfWatchDog-1]==BB_HEADER_1) {
 //
 //                [self listenFinished];
 //                break;

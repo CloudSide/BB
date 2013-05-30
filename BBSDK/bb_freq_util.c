@@ -5,7 +5,7 @@
 #include "kiss_fastfir.h"
 
 
-const float frequencies[32] = BB_FREQUENCIES;
+/*const */float frequencies[32] = BB_FREQUENCIES;
 /*static */double theta = 0;
 
 struct _bb_item_group {
@@ -33,9 +33,10 @@ void freq_init() {
 		
 		return;
 	}
-    
 
-    /*
+    
+#if 0
+
 	printf("----------------------\n");
 	
 	int i, len;
@@ -46,18 +47,14 @@ void freq_init() {
 		frequencies[i] = freq;
     
 	}
-	
-	*/
-	/*
-     for (i=0, len = strlen(BB_CHARACTERS); i<len; ++i) {
-     
-     printf("%d: %d-%d\n", i, freq_range[i].start, freq_range[i].end);
-     }
-     */
-	
-	
-	flag = 1;
+    
+#endif
+    
+    
+    flag = 1;
+    
 }
+
 
 int freq_to_num(unsigned int f, int *n) {
 	
@@ -86,6 +83,7 @@ int freq_to_num(unsigned int f, int *n) {
     }
      */
     
+    freq_init();
     
     
     if (n != NULL &&
@@ -128,7 +126,7 @@ int num_to_char(int n, char *c) {
 	
 	if (c != NULL && n>=0 && n<32) {
 		
-		*c = BB_CHARACTERS[n];		
+		*c = BB_CHARACTERS[n];
 		
 		return 0;
 	}
@@ -159,6 +157,8 @@ int char_to_num(char c, unsigned int *n) {
 }
 
 int num_to_freq(int n, unsigned int *f) {
+    
+    freq_init();
 	
 	if (f != NULL && n>=0 && n<32) {
 		
@@ -350,7 +350,7 @@ int statistics(int *src, int src_len, int *result, int res_len) {
         result[0] = c[0].item;
         result[1] = c[1].item;
         
-        if (c[res_len].item != -2 && c[2].item == 19 && c[res_len].item != c[res_len-1].item) {
+        if (c[res_len].item != -2 && c[2].item == BB_HEADER_1 && c[res_len].item != c[res_len-1].item) {
             
             for (i=2; i<res_len; i++) {
                 
@@ -389,9 +389,9 @@ int compose_statistics(int *src_vote, int *src_statics, int src_len, int *result
 	
 	int i;
 	
-	if (src_vote[0]==19) {
+	if (src_vote[0]==BB_HEADER_1) {
 		
-		if (src_statics[0]!=19) {
+		if (src_statics[0]!=BB_HEADER_1) {
 			
 			for (i=0; i<src_len-1; i++) {
 				src_vote[i] = src_vote[i+1];
@@ -442,8 +442,8 @@ int set_group(int *src, int src_len, bb_item_group *result, int res_len) {
 		result[i].count = 0;
 	}
     
-    src[0] = src[1] = src[2] = 17;
-    src[3] = src[4] = src[5] = 19;
+    src[0] = src[1] = src[2] = BB_HEADER_0;
+    src[3] = src[4] = src[5] = BB_HEADER_1;
 	
 	result[0].item = src[0];
 	result[0].count++;
@@ -754,9 +754,11 @@ int fft(void *src_data, int num)
         
         if (freq_to_num(fff, &n) != -1) {
             
-            float thresh = 3000;
+            float thresh_min = 8930;
+            float thresh_max = 184500;
 
-            if (out_data_item<thresh) {
+            if (out_data_item < thresh_min || out_data_item > thresh_max) {
+                
                 continue;
             }
             
@@ -903,7 +905,7 @@ int statistics_2(int *src, int src_len, int *result, int res_len) {
         result[1] = c[1].item;
         
         
-        if (c[res_len].item != -2 && c[2].item == 19 && c[res_len].item != c[res_len-1].item) {
+        if (c[res_len].item != -2 && c[2].item == BB_HEADER_1 && c[res_len].item != c[res_len-1].item) {
             
             for (i=2; i<res_len; i++) {
                 
