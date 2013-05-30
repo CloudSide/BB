@@ -61,9 +61,14 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
             
             //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
             UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
-            
+            //UInt32 sessionCategory = kAudioSessionCategory_RecordAudio;
             AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+            
+            UInt32 audioRoute = kAudioSessionOverrideAudioRoute_Speaker;
+            AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRoute), &audioRoute);//这两行代码就是设置为话筒模式的
         }
+        
+        
         
         AudioSessionSetActive(true);
     }
@@ -83,7 +88,6 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	defaultOutputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
 	defaultOutputDescription.componentFlags = 0;
 	defaultOutputDescription.componentFlagsMask = 0;
-    
 
 	// Get the default playback output unit
 	AudioComponent defaultOutput = AudioComponentFindNext(NULL, &defaultOutputDescription);
@@ -92,7 +96,6 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// Create a new unit based on this that we'll use for output
 	OSErr err = AudioComponentInstanceNew(defaultOutput, &toneUnit);
 	NSAssert1(toneUnit, @"Error creating unit: %hd", err);
-    
     
 	// Set our tone rendering function on the unit
 	AURenderCallbackStruct input;
@@ -154,6 +157,7 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
     
     
     //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+    //UInt32 sessionCategory = kAudioSessionCategory_RecordAudio;
     UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
     AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
     
@@ -181,7 +185,9 @@ void interruptionListener(void *inClientData, UInt32 inInterruptionState)
             _once = NO;
             [self createToneUnit];
             
-            UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+            //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+            UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+            //UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
             AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
             
             //OSErr err = AudioUnitSetParameter(toneUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Output, 0, 1.0, 0);

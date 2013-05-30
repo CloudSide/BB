@@ -236,7 +236,7 @@ static void myInputBufferHandler(void *inUserData,
 //        for (int i=1; i<nNumberOfWatchDog; i++) {
 //            
 //            if (_watchDog[nNumberOfWatchDog-1]==19) {
-//                
+//
 //                [self listenFinished];
 //                break;
 //            }
@@ -285,6 +285,8 @@ static void myInputBufferHandler(void *inUserData,
     
     int resultCode[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     
+    //int b[63];
+    //_medianfilter(_allData, b, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
     //statistics(_allData, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
     
     int b[63];
@@ -293,7 +295,7 @@ static void myInputBufferHandler(void *inUserData,
 	_medianfilter(_allData, b, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
 	_medianfilter(b, c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
     statistics_2(c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
-    
+
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
         

@@ -609,7 +609,7 @@ int post_process(bb_item_group *src, int src_len, bb_item_group *result, int res
 int encode_sound(unsigned int freq, float buffer[], size_t buffer_length) {
     
     
-    const double amplitude = 1.0;
+    const double amplitude = 0.25;
 	double theta_increment = 2.0 * PI * freq / SAMPLE_RATE;
 	int frame;
     
@@ -754,14 +754,8 @@ int fft(void *src_data, int num)
         
         if (freq_to_num(fff, &n) != -1) {
             
-            float thresh;
-            
-            if (n>16) {
-                thresh = 1500*pow(BB_SEMITONE, n);
-            } else {
-                thresh = 1500*pow(BB_SEMITONE, 32-n);
-            }
-            
+            float thresh = 3000;
+
             if (out_data_item<thresh) {
                 continue;
             }
