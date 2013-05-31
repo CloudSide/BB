@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-#define kNumberRecordBuffers    1
+#define kNumberRecordBuffers    3
 
 #define test 1
 

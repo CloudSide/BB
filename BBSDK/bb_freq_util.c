@@ -702,8 +702,8 @@ int decode_sound(void *src, int fft_number)
     
     int sound_freq = 0;
     
-    printf("\n");
-    printf("%2d ~ %2d ~ %2d ~ %2d ~ %2d ~ %2d\n", res_temp[0],res_temp[1],res_temp[2],res_temp[3],res_temp[4],res_temp[5]);
+    //printf("\n");
+    //printf("%2d ~ %2d ~ %2d ~ %2d ~ %2d ~ %2d\n", res_temp[0],res_temp[1],res_temp[2],res_temp[3],res_temp[4],res_temp[5]);
     
     if (vote(res_temp, 6, &sound_freq) <= 0) {
         
@@ -803,7 +803,7 @@ int fft(void *src_data, int num)
         
         float a = bowl[i]/ bowl_count[i];
         
-        if (a > maxFreq && a > 2222)
+        if (a > maxFreq /*&& a > 2222*/ )
         {
             maxFreq = a;
             maxIndx = i;
