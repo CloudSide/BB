@@ -229,8 +229,14 @@ static void myInputBufferHandler(void *inUserData,
     
     
     //if (_watchDog[0] == BB_HEADER_0 && _watchDog[1] == BB_HEADER_0 && _watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1) {
-    if (((_watchDog[0] == BB_HEADER_0 && _watchDog[1] == BB_HEADER_0) || (_watchDog[0] == BB_HEADER_0 && _watchDog[2] == BB_HEADER_0)) &&
-        ((_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1))) {
+//    if (((_watchDog[0] == BB_HEADER_0 && _watchDog[1] == BB_HEADER_0) || (_watchDog[0] == BB_HEADER_0 && _watchDog[2] == BB_HEADER_0)) &&
+//        ((_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1) || (_watchDog[nNumberOfWatchDog - 2] == BB_HEADER_1 && _watchDog[nNumberOfWatchDog - 3] == BB_HEADER_1))) {
+    
+    
+    if ((_watchDog[0] == BB_HEADER_0) &&
+        (_watchDog[nNumberOfWatchDog - 1] == BB_HEADER_1)) {
+    
+    
 //    if (_watchDog[0] == BB_HEADER_0 ) {
 //
 //        for (int i=1; i<nNumberOfWatchDog; i++) {
@@ -292,31 +298,31 @@ static void myInputBufferHandler(void *inUserData,
     int b[63];
 	int c[63];
 	
-	_medianfilter(_allData, b, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
-	_medianfilter(b, c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
-    statistics_2(c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
-
-    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-    for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
-        
-        printf("%d ~ ", c[i]);
-        
-        if ((i+1)%(nNumberOfWatchDog/2)==0) {
-            
-            printf("\n");
-        }
-    }
-    
-    printf("\n");
-    
-    printf("\n");
-    
-    printf("(%d-%d-)", resultCode[0], resultCode[1]);
-    
-    for (int i=2; i<20; i++) {
-        
-        printf("%d-", resultCode[i]);
-    }
+//	_medianfilter(_allData, b, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
+//	_medianfilter(b, c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18);
+//    statistics_2(c, nNumberOfWatchDog + nNumberOfCodeRecorded + nNumberOfCodeRecorded/18, resultCode, 20);
+//
+//    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+//    for (int i=0; i<nNumberOfWatchDog + nNumberOfCodeRecorded+nNumberOfCodeRecorded/18; i++) {
+//        
+//        printf("%d ~ ", c[i]);
+//        
+//        if ((i+1)%(nNumberOfWatchDog/2)==0) {
+//            
+//            printf("\n");
+//        }
+//    }
+//    
+//    printf("\n");
+//    
+//    printf("\n");
+//    
+//    printf("(%d-%d-)", resultCode[0], resultCode[1]);
+//    
+//    for (int i=2; i<20; i++) {
+//        
+//        printf("%d-", resultCode[i]);
+//    }
     
     
     
@@ -325,10 +331,11 @@ static void myInputBufferHandler(void *inUserData,
     
     unsigned char data1[RS_TOTAL_LEN];
     
-    for (int i=0; i<RS_TOTAL_LEN; i++) {
-        data1[i] = resultCode[i+2];
+    for (int i=0; i<RS_TOTAL_LEN+1; i++) {
+        data1[i] = _allData[i+3];
     }
     
+    //int count = decode_rs_char(rs, data1, eras_pos, 0);//(unsigned char*)(resultCode+2)
     int count = decode_rs_char(rs, data1, eras_pos, 0);//(unsigned char*)(resultCode+2)
     
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(bbRecorder:receivedMessage:corrected:)]) {
@@ -348,11 +355,23 @@ static void myInputBufferHandler(void *inUserData,
         [self.delegate bbRecorder:self receivedMessage:msg corrected:count>=0];
     }
     
+    for (int i=0; i<18; i++) {
+        printf("%2d-", _allData[i+3]);
+    }
+    
+    printf("\n");
+    for (int i=0; i<18; i++) {
+        printf("%2d-", data1[i]);
+    }
     printf("\n");
     printf("count  =  %d\n", count);
-    for (int i=0; i<18; i++) {
-        printf("%d-", data1[i]);
-    }
+    
+//    printf("\n");
+//    char a;
+//    for (int i=0; i<10; i++) {
+//        num_to_char(data1[i], &a);
+//        printf("%c", a);
+//    }
     
     printf("\n\n\n");
     

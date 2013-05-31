@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-#define kNumberRecordBuffers    3
+#define kNumberRecordBuffers    1
 
-#define test 3
+#define test 1
 
 #if (test==7)
 
