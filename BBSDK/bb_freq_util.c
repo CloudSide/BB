@@ -755,7 +755,7 @@ int fft(void *src_data, int num)
         if (freq_to_num(fff, &n) != -1) {
             
             float thresh_min = 8930;
-            float thresh_max = 184500;
+            float thresh_max = 300000;
 
             if (out_data_item < thresh_min || out_data_item > thresh_max) {
                 
