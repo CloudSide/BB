@@ -678,34 +678,37 @@ int decode_sound(void *src, int fft_number)
     // 计算fft
 
     int length_buff_per_turn = fft_number / 2;
-    int res_temp[6] = {-1,-1,-1,-1,-1,-1};
+    int res_temp[5] = {-1,-1,-1,-1,-1};
     int freq = 0;
     
-    freq = fft((src + fft_number / 8 * 0), length_buff_per_turn);
+    freq = fft((src+fft_number/8 + fft_number *3 / 4 / 8 * 0), length_buff_per_turn);
     freq_to_num(freq, res_temp + 0);
     
-    freq = fft((src + fft_number / 8 * 1), length_buff_per_turn);
+    freq = fft((src+fft_number/8 + fft_number *3 / 4 / 8 * 1), length_buff_per_turn);
     freq_to_num(freq, res_temp + 1);
         
-    freq = fft((src + fft_number / 8 * 2), length_buff_per_turn);
+    freq = fft((src+fft_number/8 + fft_number *3 / 4 / 8 * 2), length_buff_per_turn);
     freq_to_num(freq, res_temp + 2);
     
-    freq = fft((src + fft_number / 8 * 3), length_buff_per_turn);
+    freq = fft((src+fft_number/8 + fft_number *3 / 4 / 8 * 3), length_buff_per_turn);
     freq_to_num(freq, res_temp + 3);
     
-    freq = fft((src + fft_number / 8 * 4), length_buff_per_turn);
+    freq = fft((src+fft_number/8 + fft_number *3 / 4 / 8 * 4), length_buff_per_turn);
     freq_to_num(freq, res_temp + 4);
     
-    freq = fft((src), length_buff_per_turn * 2);
-    freq_to_num(freq, res_temp + 5);
+//    freq = fft((src), length_buff_per_turn * 2);
+//    freq_to_num(freq, res_temp + 5);
     
     
     int sound_freq = 0;
     
     printf("\n");
-    printf("%2d ~ %2d ~ %2d ~ %2d ~ %2d ~ %2d\n", res_temp[0],res_temp[1],res_temp[2],res_temp[3],res_temp[4],res_temp[5]);
+//    printf("%2d ~ %2d ~ %2d ~ %2d ~ %2d ~ %2d\n", res_temp[0],res_temp[1],res_temp[2],res_temp[3],res_temp[4],res_temp[5]);
+
+    printf("%2d ~ %2d ~ %2d ~ %2d ~ %2d\n", res_temp[0],res_temp[1],res_temp[2],res_temp[3],res_temp[4]);
+
     
-    if (vote(res_temp, 6, &sound_freq) <= 0) {
+    if (vote(res_temp, 5, &sound_freq) <= 0) {
         
         return 0;
     }
@@ -803,7 +806,7 @@ int fft(void *src_data, int num)
         
         float a = bowl[i]/ bowl_count[i];
         
-        if (a > maxFreq && a > 2222)
+        if (a > maxFreq /*&& a > 4000*/)
         {
             maxFreq = a;
             maxIndx = i;

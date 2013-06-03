@@ -41,7 +41,7 @@ static void myInputBufferHandler(void *inUserData,
         }
         
         // 录音
-        if (recorder->_listenState == RECORD) {
+        else if (recorder->_listenState == RECORD) {
             
             @synchronized(recorder) {
                 
@@ -331,8 +331,8 @@ static void myInputBufferHandler(void *inUserData,
     
     unsigned char data1[RS_TOTAL_LEN];
     
-    for (int i=0; i<RS_TOTAL_LEN+1; i++) {
-        data1[i] = _allData[i+3];
+    for (int i=0; i<RS_TOTAL_LEN; i++) {
+        data1[i] = _allData[i+2];
     }
     
     //int count = decode_rs_char(rs, data1, eras_pos, 0);//(unsigned char*)(resultCode+2)
@@ -356,7 +356,7 @@ static void myInputBufferHandler(void *inUserData,
     }
     
     for (int i=0; i<18; i++) {
-        printf("%2d-", _allData[i+3]);
+        printf("%2d-", _allData[i+2]);
     }
     
     printf("\n");
